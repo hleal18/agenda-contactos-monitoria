@@ -9,7 +9,7 @@ package vista;
  *
  * @author usuario
  */
-public class Agenda {
+public class VentanaPrincipal {
 
     /**
      * @param args the command line arguments
