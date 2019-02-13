@@ -81,9 +81,8 @@ public class Agenda {
     
     public Contacto buscar(String id) {
         for(Contacto contActual : this.contactos) {
-            if (contActual.getId().equals(id)) {
-                return contActual;
-            }
+            if (contActual == null) return null;
+            else if (contActual.getId().equals(id)) return contActual;            
         }
         
         return null;
