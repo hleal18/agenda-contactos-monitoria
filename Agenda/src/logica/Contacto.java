@@ -10,25 +10,32 @@ package logica;
  * @author usuario
  */
 public class Contacto {
+    private String id;
     private String nombre;
     private String apellido;
     private String telefono;
     private String direccion;
     
     public Contacto() {
+        this.id = "";
         this.nombre = "";
         this.apellido = "";
         this.telefono = "";
         this.direccion = "";
     }
 
-    public Contacto(String nombre, String apellido, String telefono, String direccion) {
+    public Contacto(String id, String nombre, String apellido, String telefono, String direccion) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.direccion = direccion;
     }
 
+    public String getId() {
+        return id;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -44,7 +51,11 @@ public class Contacto {
     public String getDireccion() {
         return direccion;
     }
-
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -65,6 +76,7 @@ public class Contacto {
     public String toString() {
         StringBuilder informacionContacto = new StringBuilder();
         
+        informacionContacto.append("Identificacion: ").append(this.id).append('\n');
         informacionContacto.append("Nombre: ").append(this.nombre).append('\n');
         informacionContacto.append("Apellido: ").append(this.apellido).append('\n');
         informacionContacto.append("Telefono: ").append(this.telefono).append('\n');
