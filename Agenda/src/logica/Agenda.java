@@ -10,7 +10,6 @@ package logica;
  * @author usuario
  */
 public class Agenda {
-    
     private Contacto[] contactos;
     private int ultimoIndice;
     private int capacidad;
@@ -22,8 +21,9 @@ public class Agenda {
     }
     
     public boolean agregar(Contacto nuevo) {
+        String idNuevo = nuevo.getId();
         // Usar excepciones.
-        if (buscar(nuevo.getNombre(), nuevo.getApellido()) != null) {
+        if (buscar(idNuevo) != null) {
             return false;
         }
         // Usar excepciones.
@@ -34,25 +34,25 @@ public class Agenda {
         return true;
     }
     
-    public boolean modificar(String nombre, String apellido, Contacto modificaciones) {
-        Contacto contActualizar = buscar(nombre, apellido);
+    public boolean modificar(Contacto modificaciones) {
+        Contacto contActualizar = buscar(modificaciones.getId());
         // Usar excepciones.
         if (contActualizar == null) return false;
         
-        if (modificaciones.getNombre() != "") 
+        if (!"".equals(modificaciones.getNombre())) 
             contActualizar.setNombre(modificaciones.getNombre());
-        if (modificaciones.getApellido() != "") 
+        if (!"".equals(modificaciones.getApellido())) 
             contActualizar.setApellido(modificaciones.getApellido());
-        if (modificaciones.getDireccion() != "") 
+        if (!"".equals(modificaciones.getDireccion())) 
             contActualizar.setDireccion(modificaciones.getDireccion());
-        if (modificaciones.getTelefono() != "") 
+        if (!"".equals(modificaciones.getTelefono())) 
             contActualizar.setTelefono(modificaciones.getTelefono());
         
         return true;
     }
     
-    public boolean eliminar(String nombre, String apellido) {
-        Contacto contEliminar = buscar(nombre, apellido);
+    public boolean eliminar(String id) {
+        Contacto contEliminar = buscar(id);
         int indice = 0;
         
         // Usar excepciones.
@@ -79,10 +79,9 @@ public class Agenda {
         return true;
     }
     
-    public Contacto buscar(String nombre, String apellido) {
+    public Contacto buscar(String id) {
         for(Contacto contActual : this.contactos) {
-            if (contActual.getNombre().equals(nombre) &&
-                    contActual.getApellido().equals(apellido)) {
+            if (contActual.getId().equals(id)) {
                 return contActual;
             }
         }
