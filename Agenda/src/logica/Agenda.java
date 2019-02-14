@@ -11,13 +11,13 @@ package logica;
  */
 public class Agenda {
     private Contacto[] contactos;
-    private int ultimoIndice;
+    private int ultimoElemento;
     private int capacidad;
     
     public Agenda(int capacidad) {
         this.capacidad = capacidad;
         this.contactos = new Contacto[capacidad];
-        this.ultimoIndice = -1;
+        this.ultimoElemento = -1;
     }
     
     public boolean agregar(Contacto nuevo) {
@@ -27,9 +27,9 @@ public class Agenda {
             return false;
         }
         // Usar excepciones.
-        if (ultimoIndice + 1 == capacidad) { return false; }
+        if (ultimoElemento + 1 == capacidad) { return false; }
         
-        contactos[++ultimoIndice] = nuevo;
+        contactos[++ultimoElemento] = nuevo;
         
         return true;
     }
@@ -59,22 +59,22 @@ public class Agenda {
         if (contEliminar == null) return false;
         
         // Se encuentra la posición del contacto a eliminar.
-        for (int i = 0; i < ultimoIndice + 1; i++) {
+        for (int i = 0; i < ultimoElemento + 1; i++) {
             if (contEliminar == contactos[i]) {
                 indice = i;
                 break;
             }
         }
         
-        // Util para cuando ultimoIndice = 0
+        // Util para cuando ultimoElemento = 0
         contactos[indice] = null;
         
         // Reorganizar la porción restante del arreglo.
-        for(int i = indice; i < ultimoIndice; i++) {
+        for(int i = indice; i < ultimoElemento; i++) {
             contactos[i] = contactos[i + 1];
         }
         
-        ultimoIndice--;
+        ultimoElemento--;
         
         return true;
     }
