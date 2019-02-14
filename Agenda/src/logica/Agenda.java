@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package logica;
-
+import excepciones.DuplicateContactException;
 /**
  *
  * @author usuario
@@ -20,11 +20,15 @@ public class Agenda {
         this.ultimoElemento = -1;
     }
     
-    public void agregar(Contacto nuevo) throws NullPointerException, IndexOutOfBoundsException {
+    public Contacto[] getContactos() {
+        return contactos;
+    }
+    
+    public void agregar(Contacto nuevo) throws DuplicateContactException, IndexOutOfBoundsException {
         String idNuevo = nuevo.getId();
         // Usar excepciones.
         if (buscar(idNuevo) != null) {
-            throw new NullPointerException("Usuario ya existe");
+            throw new DuplicateContactException("Usuario ya existe");
         }
         // Usar excepciones.
         if (ultimoElemento + 1 == capacidad) { throw new IndexOutOfBoundsException("Capacidad máxima de contactos"); }
