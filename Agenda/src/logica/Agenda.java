@@ -20,24 +20,22 @@ public class Agenda {
         this.ultimoElemento = -1;
     }
     
-    public boolean agregar(Contacto nuevo) {
+    public void agregar(Contacto nuevo) throws NullPointerException, IndexOutOfBoundsException {
         String idNuevo = nuevo.getId();
         // Usar excepciones.
         if (buscar(idNuevo) != null) {
-            return false;
+            throw new NullPointerException("Usuario ya existe");
         }
         // Usar excepciones.
-        if (ultimoElemento + 1 == capacidad) { return false; }
+        if (ultimoElemento + 1 == capacidad) { throw new IndexOutOfBoundsException("Capacidad máxima de contactos"); }
         
         contactos[++ultimoElemento] = nuevo;
-        
-        return true;
     }
     
-    public boolean modificar(Contacto modificaciones) {
+    public void modificar(Contacto modificaciones) throws NullPointerException {
         Contacto contActualizar = buscar(modificaciones.getId());
         // Usar excepciones.
-        if (contActualizar == null) return false;
+        if (contActualizar == null) throw new NullPointerException("Usuario a modificar no existe.");
         
         if (!"".equals(modificaciones.getNombre())) 
             contActualizar.setNombre(modificaciones.getNombre());
@@ -47,16 +45,14 @@ public class Agenda {
             contActualizar.setDireccion(modificaciones.getDireccion());
         if (!"".equals(modificaciones.getTelefono())) 
             contActualizar.setTelefono(modificaciones.getTelefono());
-        
-        return true;
     }
     
-    public boolean eliminar(String id) {
+    public void eliminar(String id) throws NullPointerException {
         Contacto contEliminar = buscar(id);
         int indice = 0;
         
         // Usar excepciones.
-        if (contEliminar == null) return false;
+        if (contEliminar == null) throw new NullPointerException("Usuario a eliminar no existe.");
         
         // Se encuentra la posición del contacto a eliminar.
         for (int i = 0; i < ultimoElemento + 1; i++) {
@@ -75,8 +71,6 @@ public class Agenda {
         }
         
         ultimoElemento--;
-        
-        return true;
     }
     
     public Contacto buscar(String id) {
