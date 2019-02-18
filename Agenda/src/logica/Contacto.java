@@ -5,11 +5,13 @@
  */
 package logica;
 
+import java.io.Serializable;
+
 /**
  *
  * @author usuario
  */
-public class Contacto {
+public class Contacto implements Serializable {
     private String id;
     private String nombre;
     private String apellido;

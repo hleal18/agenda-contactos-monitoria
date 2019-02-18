@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import logica.Agenda;
 import logica.Contacto;
+import archivos.LectorAgenda;
+import archivos.EscritorAgenda;
 /**
  *
  * @author usuario
@@ -16,14 +18,23 @@ import logica.Contacto;
 public class VentanaPrincipal extends javax.swing.JFrame {
     Agenda agenda;
     private String idBusqueda;
+    private LectorAgenda lector;
+    private EscritorAgenda escritor;
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
-        agenda = new Agenda(10);
+        
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        lector = new LectorAgenda();
+        escritor = new EscritorAgenda();
+
+        this.agenda = lector.cargar();
+        if (this.agenda == null) agenda = new Agenda(10);
+        
+        this.rellenarTabla();
     }
 
     /**
@@ -472,6 +483,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         try {
             agenda.agregar(nuevo);
             JOptionPane.showMessageDialog(null, "Contacto agregado con exito", "Contacto Agregado", JOptionPane.INFORMATION_MESSAGE);
+            this.escritor.guardar(agenda);
             rebootPnlAgregar();
         }
         catch(DuplicateContactException e) {
@@ -529,6 +541,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             
             agenda.modificar(new Contacto(this.idBusqueda, nombre, apellido, direccion, telefono));
             rebootPnlModEl();
+            this.escritor.guardar(agenda);
             JOptionPane.showMessageDialog(null, "Se modificó con éxito", "Modificación Exitosa", JOptionPane.INFORMATION_MESSAGE);
         }
         catch(NullPointerException e) {
@@ -544,6 +557,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         try {
             agenda.eliminar(this.idBusqueda);
             JOptionPane.showMessageDialog(null, "Se eliminó con exito", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            this.escritor.guardar(agenda);
             rebootPnlModEl();
         }
         catch(NullPointerException e) {
@@ -562,6 +576,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void tabsComponentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabsComponentMouseClicked
         // TODO add your handling code here:
         System.out.println("Relenando tabla");
+        this.rellenarTabla();
+    }//GEN-LAST:event_tabsComponentMouseClicked
+
+    private void rellenarTabla() {
         DefaultTableModel modelo = (DefaultTableModel)this.tblContactos.getModel();
         reiniciarTblContactos();
         
@@ -570,8 +588,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         for(int i = 0; i < contactos.length && contactos[i] != null; i++) {
             modelo.addRow(new Object[]{contactos[i].getId(), contactos[i].getNombre(), contactos[i].getApellido(), contactos[i].getDireccion(), contactos[i].getTelefono()});
         }
-    }//GEN-LAST:event_tabsComponentMouseClicked
-
+    }
+    
     private void btnReiniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReiniciarMouseClicked
         // TODO add your handling code here:
         System.out.println("Relenando tabla");

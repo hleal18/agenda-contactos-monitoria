@@ -5,11 +5,12 @@
  */
 package logica;
 import excepciones.DuplicateContactException;
+import java.io.Serializable;
 /**
  *
  * @author usuario
  */
-public class Agenda {
+public class Agenda implements Serializable {
     private Contacto[] contactos;
     private int ultimoElemento;
     private int capacidad;
