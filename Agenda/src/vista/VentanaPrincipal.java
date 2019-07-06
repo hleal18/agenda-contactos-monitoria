@@ -4,18 +4,22 @@
  * and open the template in the editor.
  */
 package vista;
+
 import excepciones.DuplicateContactException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import logica.Agenda;
 import logica.Contacto;
+
 /**
  *
  * @author usuario
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
+
     Agenda agenda;
     private String idBusqueda;
+
     /**
      * Creates new form VentanaPrincipal
      */
@@ -461,126 +465,133 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
         // TODO add your handling code here:
+        // Codigo para agregar un nuevo contacto.
         String nombre = this.txtNombreAgregar.getText();
         String apellido = this.txtApellidoAgregar.getText();
         String identificacion = this.txtIdAgregar.getText();
         String telefono = this.txtTelefonoAgregar.getText();
         String direccion = this.txtDireccionAgregar.getText();
-        
+
         Contacto nuevo = new Contacto(identificacion, nombre, apellido, telefono, direccion);
-        
+
         try {
             agenda.agregar(nuevo);
             JOptionPane.showMessageDialog(null, "Contacto agregado con exito", "Contacto Agregado", JOptionPane.INFORMATION_MESSAGE);
             rebootPnlAgregar();
-        }
-        catch(DuplicateContactException e) {
+        } catch (DuplicateContactException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Contacto Duplicado", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Capacidad Máxima", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void txtIdAgregarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdAgregarKeyTyped
         // TODO add your handling code here:
+        // Comprueba que el usuario solo introduzca numeros.
         comprobarDigito(evt);
     }//GEN-LAST:event_txtIdAgregarKeyTyped
 
     private void txtTelefonoAgregarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoAgregarKeyTyped
         // TODO add your handling code here:
+        // Comprueba que el usuario solo introduzca numeros.
         comprobarDigito(evt);
     }//GEN-LAST:event_txtTelefonoAgregarKeyTyped
 
     private void txtBuscarModKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarModKeyTyped
         // TODO add your handling code here:
+        // Comprueba que el usuario solo introduzca numeros.
         comprobarDigito(evt);
     }//GEN-LAST:event_txtBuscarModKeyTyped
 
     private void txtTelefonoModKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoModKeyTyped
         // TODO add your handling code here:
+        // Comprueba que el usuario solo introduzca numeros.
         comprobarDigito(evt);
     }//GEN-LAST:event_txtTelefonoModKeyTyped
 
     private void btnBuscarModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarModMouseClicked
         // TODO add your handling code here:
-            String identificacion = this.txtBuscarMod.getText();
-            
-            Contacto encontrado = agenda.buscar(identificacion);
-            
-            if(encontrado == null) {
-                JOptionPane.showMessageDialog(null, "Contacto no Registrado", "Contacto No Encontrado", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            this.idBusqueda = identificacion;
-            txtNombreMod.setText(encontrado.getNombre());
-            txtApellidoMod.setText(encontrado.getApellido());
-            txtDireccionMod.setText(encontrado.getDireccion());
-            txtTelefonoMod.setText(encontrado.getTelefono());
+        // Buscar contacto.
+        String identificacion = this.txtBuscarMod.getText();
+
+        Contacto encontrado = agenda.buscar(identificacion);
+
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(null, "Contacto no Registrado", "Contacto No Encontrado", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        this.idBusqueda = identificacion;
+        txtNombreMod.setText(encontrado.getNombre());
+        txtApellidoMod.setText(encontrado.getApellido());
+        txtDireccionMod.setText(encontrado.getDireccion());
+        txtTelefonoMod.setText(encontrado.getTelefono());
     }//GEN-LAST:event_btnBuscarModMouseClicked
 
     private void btnModificarModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModificarModMouseClicked
         // TODO add your handling code here:
+        // Código para modificar contacto.
         try {
             String nombre = txtNombreMod.getText();
             String apellido = txtApellidoMod.getText();
             String direccion = txtDireccionMod.getText();
             String telefono = txtTelefonoMod.getText();
-            
+
             agenda.modificar(new Contacto(this.idBusqueda, nombre, apellido, direccion, telefono));
+            // Función para reiniciar los campos de texto del tab seleccionado.
             rebootPnlModEl();
             JOptionPane.showMessageDialog(null, "Se modificó con éxito", "Modificación Exitosa", JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Contacto No Encontrado", JOptionPane.ERROR_MESSAGE);
-        }
-        finally {
+        } finally {
             this.idBusqueda = "";
         }
     }//GEN-LAST:event_btnModificarModMouseClicked
 
     private void btnEliminarModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarModMouseClicked
         // TODO add your handling code here:
+        // Código para eliminar contacto.
         try {
             agenda.eliminar(this.idBusqueda);
             JOptionPane.showMessageDialog(null, "Se eliminó con exito", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            // Función para reiniciar los campos de texto del tab seleccionado.
             rebootPnlModEl();
-        }
-        catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Contacto No Encontrado", JOptionPane.ERROR_MESSAGE);
-        }
-        finally {
+        } finally {
             this.idBusqueda = "";
         }
     }//GEN-LAST:event_btnEliminarModMouseClicked
 
     private void pnlAgendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlAgendaMouseClicked
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_pnlAgendaMouseClicked
 
     private void tabsComponentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabsComponentMouseClicked
         // TODO add your handling code here:
+        // Código encargado de rellenar la tabla con contactos registrados al 
+        // cambiar de tabs.
         System.out.println("Relenando tabla");
-        DefaultTableModel modelo = (DefaultTableModel)this.tblContactos.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) this.tblContactos.getModel();
         reiniciarTblContactos();
-        
+
         Contacto[] contactos = agenda.getContactos();
-        
-        for(int i = 0; i < contactos.length && contactos[i] != null; i++) {
+
+        for (int i = 0; i < contactos.length && contactos[i] != null; i++) {
             modelo.addRow(new Object[]{contactos[i].getId(), contactos[i].getNombre(), contactos[i].getApellido(), contactos[i].getDireccion(), contactos[i].getTelefono()});
         }
     }//GEN-LAST:event_tabsComponentMouseClicked
 
     private void btnReiniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReiniciarMouseClicked
         // TODO add your handling code here:
+        // Código encargado de rellenar la tabla al clickear botón "Reiniciar"
         System.out.println("Relenando tabla");
-        DefaultTableModel modelo = (DefaultTableModel)this.tblContactos.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) this.tblContactos.getModel();
         reiniciarTblContactos();
-        
+
         Contacto[] contactos = agenda.getContactos();
-        
-        for(int i = 0; i < contactos.length && contactos[i] != null; i++) {
+
+        for (int i = 0; i < contactos.length && contactos[i] != null; i++) {
             modelo.addRow(new Object[]{contactos[i].getId(), contactos[i].getNombre(), contactos[i].getApellido(), contactos[i].getDireccion(), contactos[i].getTelefono()});
         }
     }//GEN-LAST:event_btnReiniciarMouseClicked
@@ -588,26 +599,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
         // TODO add your handling code here:
         String identificacion = this.txtBuscarAgenda.getText();
+        // Reiniciar tabla de contactos.
         reiniciarTblContactos();
-        DefaultTableModel modelo = (DefaultTableModel)this.tblContactos.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) this.tblContactos.getModel();
 
         Contacto encontrado = agenda.buscar(identificacion);
-            
-        if(encontrado == null) {
+
+        if (encontrado == null) {
             JOptionPane.showMessageDialog(null, "Contacto no Registrado", "Contacto No Encontrado", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        modelo.addRow(new Object[]{encontrado.getId(), encontrado.getNombre(), encontrado.getApellido(), encontrado.getDireccion(), encontrado.getTelefono()});        
+
+        // Agrega una fila a la tabla con los datos del contacto.
+        modelo.addRow(new Object[]{encontrado.getId(), encontrado.getNombre(), encontrado.getApellido(), encontrado.getDireccion(), encontrado.getTelefono()});
     }//GEN-LAST:event_btnBuscarMouseClicked
 
+    // Encargado de limpiar la tabla de contactos.
     private void reiniciarTblContactos() {
-        DefaultTableModel modelo = (DefaultTableModel)this.tblContactos.getModel();
-        if(modelo.getRowCount() >= 0){
+        DefaultTableModel modelo = (DefaultTableModel) this.tblContactos.getModel();
+        if (modelo.getRowCount() >= 0) {
             System.out.println("Filas por borrar: " + modelo.getRowCount());
             modelo.setRowCount(0);
         }
     }
+
+    // Reiniciar los campos de texto y componentes del panel Agregar.
     private void rebootPnlAgregar() {
         this.txtNombreAgregar.setText("");
         this.txtApellidoAgregar.setText("");
@@ -615,20 +631,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.txtTelefonoAgregar.setText("");
         this.txtDireccionAgregar.setText("");
     }
-    
-    private void rebootPnlModEl(){
+
+    // Reinicia los campos de texto y componentes del panel Modificar y Eliminar.
+    private void rebootPnlModEl() {
         txtNombreMod.setText("");
-            txtApellidoMod.setText("");
-            txtDireccionMod.setText("");
-            txtTelefonoMod.setText("");
+        txtApellidoMod.setText("");
+        txtDireccionMod.setText("");
+        txtTelefonoMod.setText("");
     }
-    
-    private void comprobarDigito(java.awt.event.KeyEvent evt){
+
+    // Encargado de recibir un evento de tipo KeyEvent, proveniente del teclado.
+    // Evalúa si la tecla que se tecleó es un dígito. Si no lo es, lo destruye.
+    // Al destruirse no se reflejará en el campo de texto donde se introdujo.
+    // Magia.
+    private void comprobarDigito(java.awt.event.KeyEvent evt) {
         char caracter = evt.getKeyChar();
-        if(!Character.isDigit(caracter)){
+        if (!Character.isDigit(caracter)) {
             evt.consume();
         }
     }
+
     /**
      * @param args the command line arguments
      */
